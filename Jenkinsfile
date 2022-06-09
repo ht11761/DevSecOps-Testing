@@ -13,21 +13,20 @@ pipeline {
       }
     }
 
-   
-    stage ('Build') {
-      steps {
-      sh 'mvn clean package'
-       }
-
-    }
-    stage ('Check-Git-Secrets') {
+   stage ('Check-Git-Secrets') {
       steps {
         sh 'rm trufflehog || true'
         sh 'docker run --rm gesellix/trufflehog --json https://github.com/ht11761/DevSecOps-Testing.git > trufflehog'
         sh 'cat trufflehog'
       }
     }
-    
+   
+    stage ('Build') {
+      steps {
+      sh 'mvn clean package'
+       }
+    }
+   
 
     stage ('Deploy-To-Tomcat') {
             steps {
