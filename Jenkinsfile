@@ -12,7 +12,7 @@ pipeline {
             ''' 
       }
     }
-   
+    
     stage ('Check-Git-Secrets') {
       steps {
         sh 'rm trufflehog || true'
@@ -20,7 +20,7 @@ pipeline {
         sh 'cat trufflehog'
       }
     }
-
+    
     stage ('Source Composition Analysis') {
       steps {
          sh 'rm owasp* || true'
@@ -31,6 +31,7 @@ pipeline {
         
       }
     }
+    
     stage ('SAST') {
       steps {
         withSonarQubeEnv('sonar') {
@@ -39,12 +40,13 @@ pipeline {
         }
       }
     }
+    
     stage ('Build') {
       steps {
       sh 'mvn clean package'
        }
     }
-
+    
     stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
@@ -52,6 +54,15 @@ pipeline {
               }      
            }       
     }
+    
+    
+    stage ('DAST') {
+      steps {
+        sshagent(['zap']) {
+         sh 'ssh -o  StrictHostKeyChecking=no tunght@172.16.128.141 "docker run --rm -t owasp/zap2docker-stable zap-baseline.py -t http://172.16.128.141:8080/webapp/" || true'
+        }
       }
     }
     
+  }
+}
