@@ -59,7 +59,7 @@ pipeline {
     stage ('DAST') {
       steps {
         sshagent(['zap']) {
-         sh 'ssh -o  StrictHostKeyChecking=no tunght@172.16.128.141 "docker run --rm -t owasp/zap2docker-stable zap-full-scan.py -t http://172.16.128.141:8080/webapp/ -c gen.conf -x OWASP-ZAP-Report.xml -r scan-report.html" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no tunght@172.16.128.141 "docker run --rm -t owasp/zap2docker-stable zap-full-scan.py -t http://172.16.128.141:8080/webapp/ -r scan-report.html" || true'
         }
       }
     }
