@@ -53,7 +53,7 @@ pipeline {
                 sh 'scp -o StrictHostKeyChecking=no target/*.war tunght@172.16.128.142:/home/tunght/tomcat/apache-tomcat-8.5.79/webapps/webapp.war'
               }      
            }       
-    }
+        }
     
     
     stage ('DAST') {
