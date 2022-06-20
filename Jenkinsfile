@@ -40,7 +40,11 @@ pipeline {
         }
       }
     }
-    
+    stage("QualityGate") {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
     stage ('Build') {
       steps {
       sh 'mvn clean package'
